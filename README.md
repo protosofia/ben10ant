@@ -1,5 +1,5 @@
 # ben10ant
-A really usefull multitenancy package for Laravel 5
+A really usefull Multi-Tenancy package for Laravel, it's serious, at least i'm trying to...
 
 ## Installation
 
