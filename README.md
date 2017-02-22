@@ -1,6 +1,10 @@
 # ben10ant
 A really usefull multitenancy package for Laravel 5
 
+## Installation
+
+    composer require protosofia/ben10ant
+
 ## Configuration
 
 ### Console Commands Configuration
