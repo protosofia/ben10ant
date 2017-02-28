@@ -2,7 +2,7 @@
 
 return [
 
-    env('TENANT_CONNECTION', 'tenant') => [
+    env('TENANT_DB_CONNECTION', 'tenant') => [
         // 'driver' => 'mysql',
         // 'host' => ?
         // 'port' => ?

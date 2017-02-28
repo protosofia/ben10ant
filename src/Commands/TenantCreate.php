@@ -5,6 +5,7 @@ namespace Protosofia\Ben10ant\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Protosofia\Ben10ant\DatabaseCreatorFactory;
+use Protosofia\Ben10ant\StorageConfigFactory;
 
 class TenantCreate extends Command
 {
@@ -44,13 +45,19 @@ class TenantCreate extends Command
 
         /* TODO: Extract database creation methods to a database wizard class */
 
-        $connection = $this->getDatabaseConnection();
-        $parameters = $this->getDatabaseParameters($connection);
-        $config = $this->getDatabaseConfig($connection, $keyname, $parameters);
+        $dbConn = $this->getDatabaseConnection();
+        $dbParams = $this->getDatabaseParameters($dbConn);
+        $dbConfig = $this->getDatabaseConfig($dbConn, $keyname, $dbParams);
 
         /* TODO: Do the same to the storage */
 
-        $storage = $this->getStorageConfig();
+        $storageConn = $this->getStorageConnection();
+        $storageParams = $this->getStorageParameters($storageConn);
+        $storageConfig = $this->getStorageConfig($storageConn, $keyname, $storageParams);
+
+        print_r($dbConfig);
+        print_r($storageConfig);
+        die();
     }
 
     protected function getDatabaseConnection()
@@ -76,7 +83,7 @@ class TenantCreate extends Command
     {
         $connections = array_keys(Config::get('database.connections'));
 
-        $tenant = array_search('tenant', $connections);
+        $tenant = array_search(env('TENANT_DB_CONNECTION','tenant'), $connections);
 
         if (is_integer($tenant)) {
             array_splice($connections, $tenant, 1);
@@ -99,28 +106,109 @@ class TenantCreate extends Command
         $config = Config::get("database.connections.{$connection}");
 
         foreach ($parameters as $key => $data) {
-            $_message = (!isset($data['message'])) ? "Inform '{$key}'" : $data['message'];
-            $_type = (!isset($data['type'])) ? 'ask' : $data['type'];
-            $_default = false;
-
-            if (isset($data['default'])) {
-                $_type = 'anticipate';
-                $_default = str_replace([':keyname'],[$keyname], $data['default']);
-            }
-
-            if (!$_default) {
-                $config[$key] = $this->$_type($_message);
-                continue;
-            }
-
-            $config[$key] = $this->$_type($_message, [$_default]);
+            $this->askParameters($config, $keyname, $key, $data);
         }
 
         return $config;
     }
 
-    protected function getStorageConfig()
+    protected function getStorageConnection()
     {
-        return [];
+        $available = $this->getStorageConnectionsAvailable();
+
+        if (!is_array($available) || count($available) < 1) {
+            throw new \Exception('No configured storage connections available!');
+            exit();
+        }
+
+        $default = Config::get('filesystems.default');
+        $default = array_search($default, $available);
+
+        $connection = $this->choice('What is the tenant storage connection ?',
+                                    $available,
+                                    $default);
+
+        return $connection;
+    }
+
+    protected function getStorageConnectionsAvailable()
+    {
+        $connections = array_keys(Config::get('filesystems.disks'));
+
+        $tenant = array_search(env('TENANT_STORAGE_CONNECTION','tenant'), $connections);
+
+        if (is_integer($tenant)) {
+            array_splice($connections, $tenant, 1);
+        }
+
+        return $connections;
+    }
+
+    protected function getStorageParameters($connection)
+    {
+        $driver = Config::get("filesystems.disks.{$connection}.driver");
+
+        $creator = StorageConfigFactory::getConfig($driver);
+
+        return $creator->getParameters();
+    }
+
+    protected function getStorageConfig($connection, $keyname, array $parameters)
+    {
+        $config = Config::get("filesystems.disks.{$connection}");
+
+        foreach ($parameters as $key => $data) {
+            $this->askParameters($config, $keyname, $key, $data);
+        }
+
+        return $config;
+    }
+
+    protected function askParameters(&$config, $keyname, $key, array $data)
+    {
+        $_message = (!isset($data['message'])) ? false : $data['message'];
+        $_type = (!isset($data['type'])) ? 'ask' : $data['type'];
+        $_default = false;
+        $_helpers = (!isset($data['helpers'])) ? false : explode('|', $data['helpers']);
+        $_choices = (!isset($data['choices'])) ? false : $data['choices'];
+
+        if (isset($data['default'])) {
+            $_type = 'anticipate';
+            $_default = str_replace([':keyname'],[$keyname], $data['default']);
+        }
+
+        if (is_array($_choices)) {
+            $_type = 'choice';
+            if (!$_default) $_default = reset($_choices);
+        }
+
+        if (!$_message) {
+            $_message = (!$_default) ? "Inform '{$key}'"
+                                     : "Inform '{$key}' (default: {$_default})";
+        }
+
+        switch ($_type) {
+            case 'choice':
+                $config[$key] = $this->$_type($_message, $_choices, $_default);
+                break;
+            case 'anticipate':
+                $config[$key] = $this->$_type($_message, [$_default]);
+                break;
+            default:
+                $config[$key] = $this->$_type($_message);
+        }
+
+        if (is_array($_helpers)) $this->applyHelpers($config[$key], $_helpers);
+    }
+
+    protected function applyHelpers(&$value, $helpers)
+    {
+        $tmp = $value;
+
+        foreach ($helpers as $method) {
+            $tmp = $method($tmp);
+        }
+
+        $value = $tmp;
     }
 }

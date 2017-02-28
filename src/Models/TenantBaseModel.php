@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class TenantBaseModel extends Model
 {
-    protected $connection = env('TENANT_CONNECTION', 'tenant');
+    protected $connection = env('TENANT_DB_CONNECTION', 'tenant');
 }
