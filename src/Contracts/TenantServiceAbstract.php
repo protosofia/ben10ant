@@ -53,18 +53,32 @@ abstract class TenantServiceAbstract {
 
     public function setTenant(TenantModelInterface $tenant)
     {
-        $tenantCon = env('TENANT_CONNECTION', 'tenant');
-        $config = json_decode($tenant->database, true);
+        $dbConn = env('TENANT_DB_CONNECTION', 'tenant');
+        $storageConn = env('TENANT_STORAGE_CONNECTION', 'tenant');
 
-        Config::set("database.connections.{$tenantCon}", $config);
+        $dbConfig = json_decode($tenant->database, true);
+        $storageConfig = json_decode($tenant->storage, true);
 
+        $this->setDatabaseConnection($dbConn, $dbConfig);
+        $this->setStorageConnection($storageConn, $storageConfig);
+
+        return $tenant;
+    }
+
+    protected function setDatabaseConnection($conn, $config)
+    {
+        Config::set("database.connections.{$conn}", $config);
         //If you want to use query builder without having to specify the connection
         // Config::set('database.default', 'tenant');
+        DB::purge($conn);
+        DB::reconnect($conn);
+        return DB::connection($conn);
+    }
 
-        DB::purge($tenantCon);
-        DB::reconnect($tenantCon);
-
-        return DB::connection($tenantCon);
+    protected function setStorageConnection($conn, $config)
+    {
+        Config::set("filesystems.disks.{$conn}", $config);
+        return Storage::disk($conn);
     }
 
     public function hello ()
