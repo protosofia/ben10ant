@@ -23,6 +23,10 @@ class TenantTableSeeder extends Seeder
                 'database' => env('DB_DATABASE', database_path('tenants/ben10ant.sqlite')),
                 'prefix' => '',
             ]),
+            'storage' => json_encode([
+                'driver' => 'local',
+                'root' => storage_path('app/tenants/ben10ant')
+            ]),
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now()
         ]);
@@ -35,6 +39,10 @@ class TenantTableSeeder extends Seeder
                 'driver' => 'sqlite',
                 'database' => env('DB_DATABASE', database_path('tenants/4n0th3r.sqlite')),
                 'prefix' => '',
+            ]),
+            'storage' => json_encode([
+                'driver' => 'local',
+                'root' => storage_path('app/tenants/4n0th3r')
             ]),
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now()

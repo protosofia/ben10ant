@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Protosofia\Ben10ant\DatabaseCreatorFactory;
 use Protosofia\Ben10ant\StorageConfigFactory;
+use Protosofia\Ben10ant\Models\TenantModel;
+use Webpatser\Uuid\Uuid;
 
 class TenantCreate extends Command
 {
@@ -24,6 +26,13 @@ class TenantCreate extends Command
     protected $description = 'Create a tenant';
 
     /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $dbCreator;
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -40,7 +49,7 @@ class TenantCreate extends Command
      */
     public function handle()
     {
-        $user = $this->argument('name');
+        $name = $this->argument('name');
         $keyname = $this->argument('keyname');
 
         /* TODO: Extract database creation methods to a database wizard class */
@@ -55,9 +64,19 @@ class TenantCreate extends Command
         $storageParams = $this->getStorageParameters($storageConn);
         $storageConfig = $this->getStorageConfig($storageConn, $keyname, $storageParams);
 
-        print_r($dbConfig);
-        print_r($storageConfig);
-        die();
+        $this->createDatabase($dbConn, $dbConfig);
+
+        $uuid = Uuid::generate(4);
+
+        $tenant = new TenantModel();
+        $tenant->uuid = $uuid;
+        $tenant->name = $name;
+        $tenant->keyname = $keyname;
+        $tenant->database = json_encode($dbConfig);
+        $tenant->storage = json_encode($storageConfig);
+        $tenant->save();
+
+        $this->info("Tenant '{$name}' created successfully.");
     }
 
     protected function getDatabaseConnection()
@@ -96,9 +115,9 @@ class TenantCreate extends Command
     {
         $driver = Config::get("database.connections.{$connection}.driver");
 
-        $creator = DatabaseCreatorFactory::getCreator($driver);
+        $this->dbCreator = DatabaseCreatorFactory::getCreator($driver);
 
-        return $creator->getParameters();
+        return $this->dbCreator->getParameters();
     }
 
     protected function getDatabaseConfig($connection, $keyname, array $parameters)
@@ -210,5 +229,17 @@ class TenantCreate extends Command
         }
 
         $value = $tmp;
+    }
+
+    protected function createDatabase($conn, $config)
+    {
+        if (!$this->confirm('Create the database now ?')) {
+            return false;
+        }
+
+        $params = $config;
+        $params['connection'] = $conn;
+
+        return $this->dbCreator->createDatabase($params);
     }
 }

@@ -3,7 +3,8 @@
     "description": "A really usefull Multi-Tenancy package for Laravel, it's serious, at least i'm trying to",
     "type": "library",
     "require": {
-        "laravel/framework": "^5.4"
+        "laravel/framework": "^5.4",
+        "webpatser/laravel-uuid": "2.*"
     },
     "license": "MIT",
     "authors": [

@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class TenantBaseModel extends Model
 {
-    protected $connection = env('TENANT_DB_CONNECTION', 'tenant');
+    protected $connection;
+
+    public function __construct()
+    {
+        $this->connection = env('TENANT_DB_CONNECTION', 'tenant');
+        parent::__construct();
+    }
 }

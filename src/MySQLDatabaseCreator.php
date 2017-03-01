@@ -42,7 +42,7 @@ class MySQLDatabaseCreator implements DatabaseCreatorInterface
         DB::beginTransaction();
 
         try {
-            DB::connection($conn)->statement("CREATE DATABASE {$db};");
+            DB::connection($conn)->statement("CREATE DATABASE IF NOT EXISTS {$db};");
             DB::connection($conn)->statement("GRANT ALL PRIVILEGES ON `{$db}`.* TO '{$username}'@'localhost' IDENTIFIED BY '{$pass}';");
             DB::commit();
         } catch (\PDOException $e) {

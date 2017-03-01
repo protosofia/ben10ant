@@ -18,8 +18,9 @@ class CreateTenantsTable extends Migration
             $table->uuid('uuid');
             $table->string('name');
             $table->string('keyname');
-            $table->json('database');
-            $table->json('storage');
+            $table->text('database');
+            $table->text('storage');
+            $table->unsignedSmallInteger('active')->default(1);
             $table->timestamps();
         });
     }
