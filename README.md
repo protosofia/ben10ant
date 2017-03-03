@@ -122,17 +122,17 @@ The service has 4 methods to set tenant:
 
 ## TODO
 
-* <s>Console command to create tenant</s>
-  * <s>Database config</s>
-  * <s>Storage config</s>
-* <s>Console command to migrate tenant</s>
-  * <s>Migrate</s>
-  * <s>Refresh and Migrate</s>
-* <s>Console command to seed a tenant</s>
-* <s>Middleware for auth</s>
-* <s>Service Provider for Singleton Tenant Service and Facade</s>
-* <s>Database migrations (Main database, where all tenants are stored)</s>
-* <s>Tenant model</s>
+* <s>Console command to create tenant</s> - Done
+  * <s>Database config</s> - Done
+  * <s>Storage config</s> - Done
+* <s>Console command to migrate tenant</s> - Done
+  * <s>Migrate</s> - Done
+  * <s>Refresh and Migrate</s> - Done
+* <s>Console command to seed a tenant</s> - Done
+* <s>Middleware for auth</s> - Done
+* <s>Service Provider for Singleton Tenant Service and Facade</s> - Done
+* <s>Database migrations (Main database, where all tenants are stored)</s> - Done
+* <s>Tenant model</s> - Done
 
 ## NOTE
 Package is still experimental, understand as an alpha.
