@@ -45,6 +45,12 @@ Add to config/app.php:
 
 ## Usage
 
+### Config
+
+    php artisan vendor:publish
+
+This will publish the config file.
+
 ### Console Commands
 
 #### Create a New Tenant
