@@ -19,6 +19,7 @@ class TenantServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom("{$root}/Migrations");
 
         $this->publishes([
+            "{$root}/Config/tenant.php" => config_path('tenant.php'),
             "{$root}/Database/ben10ant.sqlite" => database_path('tenants/ben10ant.sqlite'),
             "{$root}/Database/4n0th3r.sqlite" => database_path('tenants/4n0th3r.sqlite'),
         ]);
@@ -39,5 +40,8 @@ class TenantServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__.'/../Config/database.php',
                                'database.connections');
+
+        $this->mergeConfigFrom(__DIR__.'/../Config/filesystems.php',
+                               'filesystems.disks');
     }
 }

@@ -5,7 +5,9 @@ namespace Protosofia\Ben10ant\Contracts;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Protosofia\Ben10ant\Contracts\TenantModelInterface;
+use Webpatser\Uuid\Uuid;
 
 abstract class TenantServiceAbstract {
 
@@ -80,6 +82,25 @@ abstract class TenantServiceAbstract {
     {
         Config::set("filesystems.disks.{$conn}", $config);
         return Storage::disk($conn);
+    }
+
+    public function new(array $params)
+    {
+        $validator = Validator::make($params, [
+            'name' => 'required',
+            'keyname' => 'required',
+            'database' => 'required|json',
+            'storage' => 'required|json',
+        ]);
+
+        if ($validator->fails()) {
+            throw new \Exception('Name, Keyname, Storage (json) and Database (json) are required fields for Tenant creation.');
+            return false;
+        }
+
+        $params['uuid'] = Uuid::generate(4)->string;
+
+        return $this->tenant->create($params);
     }
 
     public function hello ()

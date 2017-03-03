@@ -2,20 +2,19 @@
 
 namespace Protosofia\Ben10ant;
 
+use Illuminate\Support\Facades\Config;
+
 class DatabaseCreatorFactory
 {
-    protected static $creators = [
-        'sqlite' => \Protosofia\Ben10ant\SQLiteDatabaseCreator::class,
-        'mysql' => \Protosofia\Ben10ant\MySQLDatabaseCreator::class,
-    ];
-
     public static function getCreator($driver)
     {
-        if (!isset(self::$creators[$driver])) {
+        $creators = Config::get('tenant.database.drivers');
+
+        if (!isset($creators[$driver])) {
             throw new \Exception("No database creator registered for '{$driver}' driver.");
             exit();
         }
 
-        return new self::$creators[$driver]();
+        return new $creators[$driver]();
     }
 }

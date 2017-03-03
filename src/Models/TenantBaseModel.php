@@ -8,9 +8,9 @@ class TenantBaseModel extends Model
 {
     protected $connection;
 
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
         $this->connection = env('TENANT_DB_CONNECTION', 'tenant');
-        parent::__construct();
+        parent::__construct($attributes);
     }
 }

@@ -8,11 +8,12 @@ use Protosofia\Ben10ant\Contracts\TenantModelInterface;
 class TenantModel extends Model implements TenantModelInterface
 {
     protected $table = 'tenants';
-    protected $fillable = ['uuid', 'name', 'keyname', 'database'];
+    protected $guarded = [];
+    protected $fillable = ['uuid', 'name', 'keyname', 'database', 'storage'];
 
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
         $this->connection = config('database.default');
-        parent::__construct();
+        parent::__construct($attributes);
     }
 }
