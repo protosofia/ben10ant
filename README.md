@@ -43,6 +43,17 @@ Add to config/app.php:
     ],
     ...
 
+### Facade
+Add to config/app.php:
+
+    ...
+    'aliases' => [
+        ...
+        'Tenant' => Protosofia\Ben10ant\Facades\TenantFacade::class,
+        ...
+    ],
+    ...
+
 ## Usage
 
 ### Config
