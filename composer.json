@@ -13,5 +13,10 @@
             "email": "ephiot@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Protosofia\\Ben10ant\\": "src/"
+        }
+    }
 }
