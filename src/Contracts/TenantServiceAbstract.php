@@ -2,6 +2,7 @@
 
 namespace Protosofia\Ben10ant\Contracts;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;

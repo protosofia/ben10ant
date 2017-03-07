@@ -51,7 +51,7 @@ class TenantMigrateRefresh extends Command
         $step = $this->option('step');
 
         if (!$path) {
-            $path = database_path('migrations/tenants');
+            $path = 'database/migrations/tenants';
         }
 
         if (!$seeder) {
