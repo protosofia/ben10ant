@@ -14,7 +14,7 @@ class TenantMigrate extends Command
      */
     protected $signature = 'tenant:migrate {tenant : Tenant name}
                             {--force : Force the operation to run when in production.}
-                            {--path : The path of migrations files to be executed.}
+                            {--path= : The path of migrations files to be executed.}
                             {--pretend : Dump the SQL queries that would be run.}
                             {--step : Force the migrations to be run so they can be rolled back individually.}';
 

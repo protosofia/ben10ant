@@ -14,9 +14,9 @@ class TenantMigrateRefresh extends Command
      */
     protected $signature = 'tenant:migrate:refresh {tenant : Tenant name}
                             {--force : Force the operation to run when in production.}
-                            {--path : The path of migrations files to be executed.}
+                            {--path= : The path of migrations files to be executed.}
                             {--seed : Indicates if the seed task should be re-run.}
-                            {--seeder : The class name of the root seeder.}
+                            {--seeder= : The class name of the root seeder.}
                             {--step : The number of migrations to be reverted & re-run.}';
 
     /**

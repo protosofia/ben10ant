@@ -14,7 +14,7 @@ class TenantSeed extends Command
      */
     protected $signature = 'tenant:db:seed {tenant : Tenant name}
                             {--force : Force the operation to run when in production.}
-                            {--class : The class name of the root seeder [default: "DatabaseSeeder"]}';
+                            {--class= : The class name of the root seeder [default: "DatabaseSeeder"]}';
 
     /**
      * The console command description.
