@@ -98,6 +98,18 @@ This command is an indirect call to 'migrate' command, it set tenant conenction 
 
 This command is an indirect call to 'migrate:refresh' command, it set tenant conenction automatically. If the path option is not defined it assumes default path: database/migrations/tenant.
 
+#### Rollback a Migrations on Tenant Database
+
+    tenant:migrate:rollback {tenant} {--force} {--path} {--seed} {--seeder} {--step}
+
+* tenant        Tenant keyname. E.g. 'tenant-alpha';
+* --force       Force the operation to run when in production;
+* --path        The path of migrations files to be executed.
+* --pretend     Dump the SQL queries that would be run.
+* --step        The number of migrations to be reverted.
+
+This command is an indirect call to 'migrate:rollback' command, it set tenant conenction automatically. If the path option is not defined it assumes default path: database/migrations/tenant.
+
 #### Seed a Tenant Database
 
     tenant:db:seed {tenant} {--force} {--class}
