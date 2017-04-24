@@ -5,26 +5,25 @@ namespace Protosofia\Ben10ant\Commands;
 use Illuminate\Console\Command;
 use Tenant;
 
-class TenantMigrateRefresh extends Command
+class TenantRollback extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'tenant:migrate:refresh {tenant : Tenant name}
+    protected $signature = 'tenant:migrate:rollback {tenant : Tenant name}
                             {--force : Force the operation to run when in production.}
                             {--path= : The path of migrations files to be executed.}
-                            {--seed : Indicates if the seed task should be re-run.}
-                            {--seeder= : The class name of the root seeder.}
-                            {--step : The number of migrations to be reverted & re-run.}';
+                            {--pretend : Dump the SQL queries that would be run.}
+                            {--step : The number of migrations to be reverted.}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Reset and re-run all tenant migrations';
+    protected $description = 'Rollback the last tenant database migration';
 
     /**
      * Create a new command instance.
@@ -46,28 +45,22 @@ class TenantMigrateRefresh extends Command
         $tenant = $this->argument('tenant');
         $force = $this->option('force');
         $path = $this->option('path');
-        $seed = $this->option('seed');
-        $seeder = $this->option('seeder');
+        $pretend = $this->option('pretend');
         $step = $this->option('step');
 
         if (!$path) {
             $path = 'database/migrations/tenants';
         }
 
-        if (!$seeder) {
-            $seeder = 'DatabaseSeeder';
-        }
-
         $loaded = Tenant::setTenantByKey($tenant);
 
         $database = env('TENANT_DB_CONNECTION', 'tenant');
 
-        $this->call('migrate:refresh', [
+        $this->call('migrate:rollback', [
             '--database' => $database,
             '--force' => $force,
             '--path' => $path,
-            '--seed' => $seed,
-            '--seeder' => $seeder,
+            '--pretend' => $pretend,
             '--step' => $step,
         ]);
     }
