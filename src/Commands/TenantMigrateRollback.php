@@ -5,7 +5,7 @@ namespace Protosofia\Ben10ant\Commands;
 use Illuminate\Console\Command;
 use Tenant;
 
-class TenantRollback extends Command
+class TenantMigrateRollback extends Command
 {
     /**
      * The name and signature of the console command.
