@@ -163,6 +163,3 @@ The service has 4 methods to set tenant:
 * <s>Service Provider for Singleton Tenant Service and Facade</s> - Done
 * <s>Database migrations (Main database, where all tenants are stored)</s> - Done
 * <s>Tenant model</s> - Done
-
-## NOTE
-Package is still experimental, understand as an alpha.
