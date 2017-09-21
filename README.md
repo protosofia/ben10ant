@@ -58,9 +58,9 @@ Add to config/app.php:
 ### Models
 This package have 3 types of models:
 
-* Protosofia\Ben10ant\Models\TenantModel: This model will always target the *main database*, where is the "tenants" table;
-* Protosofia\Ben10ant\Models\TenantBaseModel: This model will always target the *current tenant database*, in other words, the current logged user tenant;
-* Protosofia\Ben10ant\Models\TenantAuthenticatableBaseModel: This model is exactly as *TenantBaseModel*, but implements *Illuminate\Foundation\Auth\User*;
+* **Protosofia\Ben10ant\Models\TenantModel**: This model will always target the *main database*, where is the "tenants" table;
+* **Protosofia\Ben10ant\Models\TenantBaseModel**: This model will always target the *current tenant database*, in other words, the current logged user tenant;
+* **Protosofia\Ben10ant\Models\TenantAuthenticatableBaseModel**: This model is exactly as *TenantBaseModel*, but implements *Illuminate\Foundation\Auth\User*;
 
 To manage the "tenants" table, you can create a model as below:
 
