@@ -123,7 +123,7 @@ This command is a tenant creator wizard, you can configure the database connecti
 * --pretend     Dump the SQL queries that would be run.
 * --step        Force the migrations to be run so they can be rolled back individually.
 
-This command is an indirect call to 'migrate' command, it set tenant conenction automatically. If the path option is not defined it assumes default path: database/migrations/tenant.
+This command is an indirect call to 'migrate' command, it set tenant conenction automatically. If the path option is not defined it assumes default path: database/migrations/tenants.
 
 #### Refresh and Run Migrations on Tenant Database
 
@@ -136,7 +136,7 @@ This command is an indirect call to 'migrate' command, it set tenant conenction 
 * --seeder      The class name of the root seeder.
 * --step        The number of migrations to be reverted & re-run.
 
-This command is an indirect call to 'migrate:refresh' command, it set tenant conenction automatically. If the path option is not defined it assumes default path: database/migrations/tenant.
+This command is an indirect call to 'migrate:refresh' command, it set tenant conenction automatically. If the path option is not defined it assumes default path: database/migrations/tenants.
 
 #### Rollback a Migrations on Tenant Database
 
@@ -148,7 +148,7 @@ This command is an indirect call to 'migrate:refresh' command, it set tenant con
 * --pretend     Dump the SQL queries that would be run.
 * --step        The number of migrations to be reverted.
 
-This command is an indirect call to 'migrate:rollback' command, it set tenant conenction automatically. If the path option is not defined it assumes default path: database/migrations/tenant.
+This command is an indirect call to 'migrate:rollback' command, it set tenant conenction automatically. If the path option is not defined it assumes default path: database/migrations/tenants.
 
 #### Seed a Tenant Database
 
