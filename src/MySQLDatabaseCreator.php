@@ -16,7 +16,8 @@ class MySQLDatabaseCreator implements DatabaseCreatorInterface
             'database' => 'required|string',
             'username' => 'required|string',
             'password' => 'required|string',
-            'connection' => 'sometimes|required|string'
+            'connection' => 'sometimes|required|string',
+            'host' => 'sometimes|required|string',
         ]);
 
         if ($validator->fails()) {
@@ -38,12 +39,13 @@ class MySQLDatabaseCreator implements DatabaseCreatorInterface
         $username = $params['username'];
         $pass = $params['password'];
         $conn = $params['connection'];
+        $host = $params['host'] ?? 'localhost';
 
         DB::beginTransaction();
 
         try {
-            DB::connection($conn)->statement("CREATE DATABASE IF NOT EXISTS {$db};");
-            DB::connection($conn)->statement("GRANT ALL PRIVILEGES ON `{$db}`.* TO '{$username}'@'localhost' IDENTIFIED BY '{$pass}';");
+            DB::connection($conn)->statement("CREATE DATABASE IF NOT EXISTS `{$db}`;");
+            DB::connection($conn)->statement("GRANT ALL PRIVILEGES ON `{$db}`.* TO '{$username}'@'{$host}' IDENTIFIED BY '{$pass}';");
             DB::commit();
         } catch (\PDOException $e) {
             DB::rollBack();
