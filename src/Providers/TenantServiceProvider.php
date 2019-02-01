@@ -18,12 +18,12 @@ class TenantServiceProvider extends ServiceProvider
 
         // Bad man :(
         // $this->loadMigrationsFrom("{$root}/Migrations");
+        $this->publishes(["{$root}/Migrations" => database_path('migrations')], 'migrations');
 
         $this->publishes([
             "{$root}/Config/tenant.php" => config_path('tenant.php'),
             "{$root}/Database/ben10ant.sqlite" => database_path('tenants/ben10ant.sqlite'),
             "{$root}/Database/4n0th3r.sqlite" => database_path('tenants/4n0th3r.sqlite'),
-            "{$root}/Migrations/*" => database_path('migrations'),
         ]);
     }
 
