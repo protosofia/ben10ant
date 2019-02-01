@@ -17,7 +17,7 @@ class MySQLDatabaseCreator implements DatabaseCreatorInterface
             'username' => 'required|string',
             'password' => 'required|string',
             'connection' => 'sometimes|required|string',
-            'host' => 'sometimes|required|string',
+            'grant-host' => 'sometimes|required|string',
         ]);
 
         if ($validator->fails()) {
@@ -39,7 +39,7 @@ class MySQLDatabaseCreator implements DatabaseCreatorInterface
         $username = $params['username'];
         $pass = $params['password'];
         $conn = $params['connection'];
-        $host = $params['host'] ?? 'localhost';
+        $host = $params['grant-host'] ?? 'localhost';
 
         DB::beginTransaction();
 
